@@ -1,0 +1,16 @@
+# 把date欄位的資料型態改成日期
+dataframes[1]['調價日期'] = pd.to_datetime(dataframes[1]['調價日期'], format='%Y/%m/%d')
+# 把各種產品的價格欄位的資料型態改成數字，並使用插值方法填充缺失值
+products = ['無鉛汽油92', '無鉛汽油95', '無鉛汽油98', '超級/高級柴油']
+for product in products:
+    dataframes[1][product] = pd.to_numeric(dataframes[1][product], errors='coerce')
+    dataframes[1][product].interpolate(method='linear', inplace=True)
+myfont = FontProperties(fname=r'C:\Windows\Fonts\msjh.ttc')
+# 畫出折線圖
+for product in products:
+    plt.plot(dataframes[1]['調價日期'], dataframes[1][product], label=product)
+plt.xlabel('日期', fontproperties=myfont)
+plt.ylabel('價格', fontproperties=myfont)
+plt.title('油價', fontproperties=myfont)
+plt.legend(prop=myfont)
+plt.show()
