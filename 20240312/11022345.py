@@ -5,12 +5,9 @@ import numpy as np
 from matplotlib.font_manager import FontProperties
 # 讀取csv檔案，並將其轉換為DataFrame
 df = pd.read_csv('112年1-10月交通事故簡訊通報資料.csv', encoding='utf-8')
-df['國道名稱'] = df['國道名稱'].fillna('')
 # 選取包含"國道1號"的行
 df1 = df[df['國道名稱']=='國道1號']
-df2 = df1[df1['方向']=='南']
-# 印出選取的行
-print(df2)
+df2 = df1[(df1['方向']=='南') | (df1['方向']=='南向')]
 # 設定支援中文的字體
 font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
 #把 欄位 '年' '月' '日' '時' '分'
@@ -40,7 +37,7 @@ plt.suptitle('11022345', fontproperties=font)
 plt.show()
 #-------------------------------------
 df1 = df[df['國道名稱']=='國道1號']
-df2 = df1[df1['方向']=='北']
+df2 = df1[(df1['方向']=='北') | (df1['方向']=='北向')]
 # 印出選取的行
 print(df2)
 # 設定支援中文的字體
@@ -72,7 +69,7 @@ plt.suptitle('11022345', fontproperties=font)
 plt.show()
 #-------------------------------------
 df1 = df[df['國道名稱']=='國道3號']
-df2 = df1[df1['方向']=='南']
+df2 = df1[(df1['方向']=='南') | (df1['方向']=='南向')]
 # 印出選取的行
 print(df2)
 # 設定支援中文的字體
@@ -104,7 +101,7 @@ plt.suptitle('11022345', fontproperties=font)
 plt.show()
 #-------------------------------------
 df1 = df[df['國道名稱']=='國道3號']
-df2 = df1[df1['方向']=='北']
+df2 = df1[(df1['方向']=='北') | (df1['方向']=='北向')]
 # 印出選取的行
 print(df2)
 # 設定支援中文的字體
