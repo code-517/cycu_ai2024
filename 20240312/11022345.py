@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.font_manager import FontProperties
 # 讀取csv檔案，並將其轉換為DataFrame
-df = pd.read_csv('112年1-10月交通事故簡訊通報資料.csv', encoding='utf-8')
+df = pd.read_csv('/workspaces/cycu_ai2024/20240312/112年1-10月交通事故簡訊通報資料.csv', encoding='utf-8')
 # 選取包含"國道1號"的行
 df1 = df[df['國道名稱']=='國道1號']
 df2 = df1[(df1['方向']=='南') | (df1['方向']=='南向')]
