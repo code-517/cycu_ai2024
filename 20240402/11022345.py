@@ -26,7 +26,7 @@ for link in rss_links:
         temp_match = re.search(r'溫度: (\d+ ~ \d+)', entry.title)
         if city_match and temp_match:
             temp_dict[city_match.group(1)] = temp_match.group(1)
-
+print(temp_dict)
 County_data['Temperature'] = County_data['COUNTYNAME'].map(temp_dict)
 #import folium
 
