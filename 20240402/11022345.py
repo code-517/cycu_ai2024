@@ -47,6 +47,7 @@ County_data['Temperature'] = County_data['COUNTYNAME'].map(temp_dict)
 #m
 #m.save('map.html')
 
+
 # 讀取你的地理資訊
 gdf = gpd.GeoDataFrame(County_data)
 
@@ -57,13 +58,17 @@ fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 gdf.plot(column='Temperature', legend=True, ax=ax)
 
 # 設定 x 軸和 y 軸的範圍
-ax.set_xlim(119, 124)
-ax.set_ylim(20, 26)
+ax.set_xlim(118, 124)
+ax.set_ylim(20, 28 )
 
 # 在每個區域的中心點添加文字
 for x, y, label in zip(gdf.geometry.centroid.x, gdf.geometry.centroid.y, gdf['Temperature']):
-    ax.text(x, y, label, fontsize=12)
+    ax.text(x, y, label, fontsize=10)
 
+
+
+#標題為學號11022345姓名吳奕辰
+plt.title('11022345WUYICHEN')
 # 顯示地圖
 plt.show()
 
