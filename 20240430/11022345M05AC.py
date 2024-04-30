@@ -11,7 +11,7 @@ def daterange(start_date, end_date):
 folder_path = '/workspaces/cycu_ai2024/'
 
 # 定義欄位名稱
-column_names = ['Time', 'Start', 'End', 'Value1', 'Value2', 'Value3']
+column_names = ['Time', 'gate', 'gate1', 'Value1', 'Value2', 'Value3']
 
 # 儲存所有 DataFrame 的列表
 dfs = []

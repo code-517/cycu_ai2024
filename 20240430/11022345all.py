@@ -1,26 +1,20 @@
-#/workspaces/cycu_ai2024/20240430/combinedM03A.csv
 import pandas as pd
-
+#M05AS31_rows
 # 讀取 CSV 檔案
-df = pd.read_csv('/workspaces/cycu_ai2024/20240430/combinedM03A.csv')
-# 將 'Value1' 欄位轉換為字串，以便將其用作新的欄位名稱
-df['Value1'] = df['Value1'].astype(str)
-
-# 使用 pivot_table() 函數將 'Value1' 欄位的值轉換為新的欄位
-pivot_df = df.pivot_table(index=['Time', 'gate', 'direct'], columns='Value1', values='Value2', fill_value=0)
-
-# 將索引重設為欄位
-pivot_df.reset_index(inplace=True)
-
-# 更改欄位名稱
-pivot_df.columns = ['time', 'gate', 'direct', '31小客車', '32小貨車', '41大客車', '42大貨車', '5聯結車']
-
-# 將所有浮點數欄位轉換為整數
-for col in ['31小客車', '32小貨車', '41大客車', '42大貨車', '5聯結車']:
-    pivot_df[col] = pivot_df[col].astype(int)
-
-# 選擇 'gate' 欄位的值以 '01' 開頭的行
-pivot_df = pivot_df[pivot_df['gate'].str.startswith('01')]
-
-# 將處理後的 DataFrame 寫入到一個新的 CSV 檔案中
-pivot_df.to_csv('/workspaces/cycu_ai2024/20240430/NEWcombinedM03A.csv', index=False)
+# 讀取第一個 CSV 檔案
+df1 = pd.read_csv('/workspaces/cycu_ai2024/20240430/NEWcombinedM03A.csv')
+print("Successfully read the first CSV file.")
+# 讀取第二個 CSV 檔案
+df2 = pd.read_csv('/workspaces/cycu_ai2024/20240430/M05AS31_rows.csv')
+print("Successfully read the second CSV file.")
+df1['time'] = pd.to_datetime(df1['time'], format='%Y-%m-%d %H:%M')
+df2['Time'] = pd.to_datetime(df2['Time'], format='%Y/%m/%d %H:%M')
+print("df1:")
+print(df1.head())
+print("\ndf2:")
+print(df2[['Time','gate', 'Value2']].head())
+# 將 df1 和 df2 進行合併，並只保留 'Value2' 欄位
+# 將 df1 和 df2 進行合併，並只保留 'Value2' 欄位
+df1 = pd.merge(df1, df2[['Time','gate', 'Value2']], how='left', left_on=['time', 'gate'], right_on=['Time', 'gate'])
+df1 = df1.drop(columns=['Time'])
+df1.to_csv('/workspaces/cycu_ai2024/20240430/ALL.csv', index=False)
