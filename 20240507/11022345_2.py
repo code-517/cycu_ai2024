@@ -20,7 +20,6 @@ df['direction'] = df['direction'].map({'N': 0, 'S': 1})
 
 # 刪除原始的'gate'欄位
 df = df.drop(columns=['gate'])
-print(df)
 #以x軸為時間，y軸為mileage，Z為車輛數也就是第二欄，顏色為速度畫出四維圖
 #速度的分色為藍色到紅色
 import matplotlib.pyplot as plt
@@ -47,14 +46,19 @@ cmap = ListedColormap(colors)
 # 繪製散點圖，其中x軸為時間，y軸為里程數，z軸為車輛數，顏色為速度
 sc = ax.scatter(df['time'], df['mileage'], df['31小客車'], c=df['31小客車速度'], cmap=cmap, norm=norm)
 
-# 添加顏色條
-plt.colorbar(sc)
+# 添加顏色條，並將其與圖形的距離設為10%的圖形寬度，並設置標籤
+cbar = plt.colorbar(sc,pad=0.3)
+cbar.set_label('Speed (km/h)')
+cbar.set_ticks([0, 20, 40, 60, 80, 160])
+cbar.set_ticklabels(['0', '20', '40', '60', '80', '160'])
+
 
 # 設置軸標籤
 ax.set_xlabel('Time')
 ax.set_ylabel('Mileage')
 ax.set_zlabel('Number of Cars')
-
+plt.title('11022345WUYICHEN')
+plt.subplots_adjust(left=0, right=0.85)
 # 顯示圖形
 plt.show()
 #圖形存下來
