@@ -17,7 +17,6 @@ x = selected_rows.iloc[:, 1].apply(lambda x: int(re.search(r'\d{4}', x).group())
 
 # 去除x中的None值
 selected_rows = selected_rows[x.notnull()]
-print(selected_rows)
 x = x.dropna()
 
 # 取出第五個欄位的值
@@ -29,8 +28,6 @@ y = np.array(y)
 
 # 設定 numpy 的列印選項以抑制科學記數法
 np.set_printoptions(suppress=True)
-print(x)
-print(y)
 from scipy.interpolate import CubicSpline
 
 # 建立一個三次樣條曲線
@@ -65,7 +62,6 @@ x = selected_rows.iloc[:, 1].apply(lambda x: int(re.search(r'\d{4}', x).group())
 
 # 去除x中的None值
 selected_rows = selected_rows[x.notnull()]
-print(selected_rows)
 x = x.dropna()
 
 # 取出第五個欄位的值
@@ -74,11 +70,9 @@ y = selected_rows.iloc[:, 4]
 # 轉換為陣列
 x = np.array(x)
 y = np.array(y)
-
+print(x)
 # 設定 numpy 的列印選項以抑制科學記數法
 np.set_printoptions(suppress=True)
-print(x)
-print(y)
 from scipy.interpolate import CubicSpline
 
 # 建立一個三次樣條曲線
@@ -103,72 +97,3 @@ plt.ylabel('V')
 plt.savefig('/workspaces/cycu_ai2024/20240514/11022345_2D_N.png')
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-selected_rows = df[df.iloc[:, 3] == 31]
-#選擇第二個欄位值開頭為01F
-selected_rows = selected_rows[selected_rows.iloc[:, 1].apply(lambda x: x.startswith('01F'))]
-# 選擇第三個欄位值為N的行
-selected_rows = selected_rows[selected_rows.iloc[:, 2] == 'S']
-# 提取第二個欄位中的數字，只有當數字長度為4時
-x = selected_rows.iloc[:, 1].apply(lambda x: int(re.search(r'\d{4}', x).group()) if re.search(r'\d{4}', x) else None)
-
-# 去除x中的None值
-selected_rows = selected_rows[x.notnull()]
-print(selected_rows)
-x = x.dropna()
-
-# 取出第五個欄位的值
-y = selected_rows.iloc[:, 4]
-
-# 提取第一欄位的時間並轉換為 datetime 對象
-time = pd.to_datetime(selected_rows.iloc[:, 0])
-
-# 將時間特徵化
-z = pd.DataFrame()
-z['year'] = time.dt.year
-z['month'] = time.dt.month
-z['day'] = time.dt.day
-z['hour'] = time.dt.hour
-z['minute'] = time.dt.minute
-z['second'] = time.dt.second
-
-# 轉換為陣列
-z = np.array(z)
-# 轉換為陣列
-x = np.array(x)
-y = np.array(y)
-
-# 設定 numpy 的列印選項以抑制科學記數法
-np.set_printoptions(suppress=True)
-
-from mpl_toolkits.mplot3d import Axes3D
-
-# ...你的其他程式碼...
-
-# 建立一個三次樣條曲線
-cs = CubicSpline(x, y)
-
-# 計算曲線上的值
-x_new = np.arange(min(x), max(x), 0.1)
-y_new = cs(x_new)
-
-fig = plt.figure(figsize=(10, 6))
-ax = fig.add_subplot(111, projection='3d')
-
-# 繪製三維曲線
-ax.plot(x, y, z, 'o', label='original data')
-ax.plot(x_new, y_new, z, label='cubic spline')
-
-ax.legend(loc='best')
-
-# 標題
-ax.set_title('11022345WUYICH 1_south')
-# x軸標題
-ax.set_xlabel('KM')
-# y軸標題
-ax.set_ylabel('V')
-# z軸標題
-ax.set_zlabel('Time')
-
-# 存下來
-plt.savefig('/workspaces/cycu_ai2024/20240514/11022345_3D_N.png')
-plt.show()
