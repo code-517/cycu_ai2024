@@ -10,7 +10,7 @@ from folium.plugins import TimestampedGeoJson
 import json
 
 # 讀取CSV檔案
-df = pd.read_csv(r'/workspaces/cycu_ai2024/20240521/M05A31_rows.csv')
+df = pd.read_csv(r'/workspaces/cycu_ai2024/20240521/M05A31_2rows.csv')
 
 # 讀取閘門位置的CSV檔案
 gate_df = pd.read_csv(r'/workspaces/cycu_ai2024/20240521/國道計費門架座標及里程牌價表1130327.csv')
