@@ -36,27 +36,32 @@ for index, row in df.iterrows():
     time = pd.to_datetime(row['Time'])
     
     # 根據速度設定線的顏色
-    if row['SpaceMeanSpeed'] < 90:
+    if row['SpaceMeanSpeed'] < 60:
         color = 'red'
+    elif row['SpaceMeanSpeed'] < 70:
+        color = 'orange'
+    elif row['SpaceMeanSpeed'] < 80:
+        color = 'yellow'
     else:
         color = 'green'
-    
     # 創建一個特徵
     feature = {
-        'type': 'Feature',
-        'geometry': {
-            'type': 'LineString',
-            'coordinates': [[lon, lat], [lon, lat]],  # 這裡需要你的資料中有閘門的起點和終點的緯度和經度
+    'type': 'Feature',
+    'geometry': {
+        'type': 'Point',
+        'coordinates': [lon, lat],
+    },
+    'properties': {
+        'times': [time.isoformat()],
+        'style': {
+            'color': color,
+            'radius': row['Traffic'] / 100,  # 這裡假設車流量的最大值為100，你需要根據你的資料來調整這個值
+            'fillColor': color,
+            'fillOpacity': 0.8,
         },
-        'properties': {
-            'times': [time.isoformat(), time.isoformat()],
-            'style': {
-                'color': color,
-                'weight': row['Traffic'] / 100,  # 這裡假設車流量的最大值為100，你需要根據你的資料來調整這個值
-            },
-            'popup': f"Car Type: {row['車種小客車']}, Speed: {row['SpaceMeanSpeed']}, Traffic Volume: {row['Traffic']}",
-        }
+        'popup': f"Car Type: {row['車種小客車']}, Speed: {row['SpaceMeanSpeed']}, Traffic Volume: {row['Traffic']}",
     }
+}
     
     # 將特徵添加到GeoJSON對象中
     geo_json_data['features'].append(feature)
