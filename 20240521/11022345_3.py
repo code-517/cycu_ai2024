@@ -48,7 +48,7 @@ for index, row in df_traffic.iterrows():
         },
         'properties': {
             'times': [row['Time'], row['Time']],
-            'style': {'color': color, 'weight': 20},  # 設定線條的顏色和粗細
+            'style': {'color': color, 'weight': 6},  # 設定線條的顏色和粗細
             'icon': 'circle',
             'iconstyle': {
                 'fillColor': color,
