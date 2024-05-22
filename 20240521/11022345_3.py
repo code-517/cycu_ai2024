@@ -8,7 +8,7 @@ import folium
 df_gantry = pd.read_csv('/workspaces/cycu_ai2024/20240521/國道計費門架座標.csv')
 
 # 讀取車流量資料
-df_traffic = pd.read_csv('/workspaces/cycu_ai2024/20240521/M05A31_2rows.csv')
+df_traffic = pd.read_csv('/workspaces/cycu_ai2024/20240521/M05A31_rows.csv')
 
 # 創建門架座標的字典
 gantry_locations = {row['設定收費區代碼']: (row['緯度'], row['經度']) for index, row in df_gantry.iterrows()}
@@ -70,4 +70,4 @@ TimestampedGeoJson(
 ).add_to(m)
 
 # 儲存地圖
-m.save('map.html')
+m.save('map2.html')
