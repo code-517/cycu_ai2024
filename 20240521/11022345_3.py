@@ -54,7 +54,7 @@ for index, row in df_traffic.iterrows():
                 'fillColor': color,
                 'fillOpacity': 0.8,
                 'stroke': 'true',
-                'radius': 5
+                'radius': 3
             }
         }
     }
@@ -65,7 +65,7 @@ for index, row in df_traffic.iterrows():
 # 創建一個TimestampedGeoJson對象並添加到地圖上
 TimestampedGeoJson(
     {'type': 'FeatureCollection', 'features': features},
-    period='PT1H',
+    period='PT5M',
     add_last_point=True,
 ).add_to(m)
 
