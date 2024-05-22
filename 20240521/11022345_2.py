@@ -27,8 +27,7 @@ geo_json_data = {
     'features': []
 }
 
-# 在GeoJSON對象中添加每個時間點的車速
-# 在GeoJSON對象中添加每個時間點的車速
+# 在GeoJSON對象中添加每個時間點的車流量和速度
 for index, row in df.iterrows():
     # 獲取閘門的緯度和經度
     lat, lon = gate_locations[row['GantryFrom']]
@@ -36,31 +35,36 @@ for index, row in df.iterrows():
     # 將時間欄位轉換為datetime對象
     time = pd.to_datetime(row['Time'])
     
+    # 根據速度設定線的顏色
+    if row['SpaceMeanSpeed'] < 90:
+        color = 'red'
+    else:
+        color = 'green'
+    
     # 創建一個特徵
     feature = {
         'type': 'Feature',
         'geometry': {
-            'type': 'Point',
-            'coordinates': [lon, lat]
+            'type': 'LineString',
+            'coordinates': [[lon, lat], [lon, lat]],  # 這裡需要你的資料中有閘門的起點和終點的緯度和經度
         },
         'properties': {
-            'time': time.isoformat(),
+            'times': [time.isoformat(), time.isoformat()],
+            'style': {
+                'color': color,
+                'weight': row['Traffic'] / 100,  # 這裡假設車流量的最大值為100，你需要根據你的資料來調整這個值
+            },
             'popup': f"Car Type: {row['車種小客車']}, Speed: {row['SpaceMeanSpeed']}, Traffic Volume: {row['Traffic']}",
-            'icon': 'circle',
-            'iconstyle': {
-                # ...
-            }
         }
     }
-    # 將特徵添加到GeoJSON對象中
-    geo_json_data['features'].append(feature)
+    
     # 將特徵添加到GeoJSON對象中
     geo_json_data['features'].append(feature)
 
-# 在地圖上添加帶有時間軸的GeoJSON
+# 在地圖上添加TimestampedGeoJson
 TimestampedGeoJson(
     geo_json_data,
-    period='PT1H',  # 這裡的'PT1H'表示每個時間點之間的間隔為1小時，你需要根據你的資料來調整這個值
+    period='PT5M',  # 每五分鐘更新一次
     add_last_point=True,
 ).add_to(m)
 
