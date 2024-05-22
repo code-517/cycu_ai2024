@@ -20,10 +20,14 @@ m = folium.Map(location=[23.5, 121], zoom_start=7)
 for gantry, location in gantry_locations.items():
     folium.CircleMarker(location, radius=5, color='blue', fill=True, fill_color='blue', fill_opacity=0.6).add_to(m)
 
+# 創建一個空的GeoJSON特徵列表
+features = []
+
 # 在地圖上添加每個時間點的車流量和速度
 for index, row in df_traffic.iterrows():
     # 獲取閘門的緯度和經度
     lat, lon = gantry_locations[row['GantryFrom']]
+    next_lat, next_lon = gantry_locations[row['GantryTo']]
     
     # 根據速度設定線條的顏色
     if row['SpaceMeanSpeed'] < 60:
@@ -35,8 +39,35 @@ for index, row in df_traffic.iterrows():
     else:
         color = 'green'
     
-    # 在地圖上添加線條
-    folium.PolyLine([(lat, lon), (lat, lon)], color=color).add_to(m)
+    # 創建一個GeoJSON特徵
+    feature = {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': [[lon, lat], [next_lon, next_lat]],
+        },
+        'properties': {
+            'times': [row['Time'], row['Time']],
+            'style': {'color': color, 'weight': 20},  # 設定線條的顏色和粗細
+            'icon': 'circle',
+            'iconstyle': {
+                'fillColor': color,
+                'fillOpacity': 0.8,
+                'stroke': 'true',
+                'radius': 5
+            }
+        }
+    }
+    
+    # 將特徵添加到列表中
+    features.append(feature)
+
+# 創建一個TimestampedGeoJson對象並添加到地圖上
+TimestampedGeoJson(
+    {'type': 'FeatureCollection', 'features': features},
+    period='PT1H',
+    add_last_point=True,
+).add_to(m)
 
 # 儲存地圖
 m.save('map.html')
